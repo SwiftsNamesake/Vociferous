@@ -22,6 +22,11 @@ import pygame.mixer
 from os import listdir
 from os.path import splitext
 
+from SwiftUtils import Console
+
+
+con = Console.Console()
+
 
 def pronounce(sentence, sounds, root):
 
@@ -33,10 +38,21 @@ def pronounce(sentence, sounds, root):
 	prev = 0 # Length of previous sounds (milliseconds)
 	ch = pygame.mixer.Channel(0)
 
+	N = 0
+
+
+	def play(s):
+		def schedule():
+			nonlocal N
+			ch.queue(s)
+			con.moveCursor(0,0)
+			con.printMarkup(' '.join(word if index != N else '<fg=GREEN>%s</>' % word for index, word in enumerate(sentence.split())))
+			N += 1
+		return schedule
+	
+
 	for word in sentence.lower().split():
 		sound = sounds[word]
-		def play(s):
-			return lambda: ch.queue(s)
 		root.after(int(prev),  play(sound))
 		prev += sound.get_length()*1000
 
@@ -54,6 +70,10 @@ def main():
 	'''
 
 	root = tk.Tk()
+	entry = tk.Entry()
+	entry.pack()
+
+	entry.bind('<Return>', lambda e: [print('Saying \'%s\'' % entry.get()), pronounce(entry.get(), sounds, root)])
 
 	pygame.init()
 	pygame.mixer.init()
@@ -70,7 +90,7 @@ def main():
 	# root.bind('w', lambda e: sounds['in'].play())
 	# root.bind('e', lambda e: sounds['the'].play())
 	# root.bind('r', lambda e: sounds['jungle'].play())
-	pronounce("Lion in the jungle", sounds, root)
+	pronounce("the mighty lion sleep tonight in the jungle", sounds, root)
 	root.mainloop()
 
 
