@@ -22,8 +22,7 @@ import pygame.mixer
 from os import listdir
 from os.path import splitext
 
-# from SwiftUtils import Console
-import Console
+from SwiftUtils import Console
 
 
 con = Console.Console()
