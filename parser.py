@@ -19,6 +19,6 @@ import pygame
 def splitWords(fn : str) -> [pygame.mixer.Sound]:
 
 	'''
-	
-	
+	Splits the sound file indicated by the f
+
 	'''
