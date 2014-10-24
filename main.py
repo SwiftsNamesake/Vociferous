@@ -41,10 +41,14 @@ def pronounce(sentence, sounds, root):
 	N = 0
 
 
-	def play(s):
+	def play(s): 
 		def schedule():
 			nonlocal N
 			ch.queue(s)
+			con.moveCursor(0,0)
+			# Clear line
+			# TODO | Fix this hack
+			print(' '*80)
 			con.moveCursor(0,0)
 			con.printMarkup(' '.join(word if index != N else '<fg=GREEN>%s</>' % word for index, word in enumerate(sentence.split())))
 			N += 1
@@ -58,8 +62,8 @@ def pronounce(sentence, sounds, root):
 
 
 	# for word, sound in zip(sentence.lower().split(), map(lambda w: sounds[w], sentence.lower().split())):
-		# print(word)
-		# ch.queue(sound)
+	# 	print(word)
+	# 	ch.queue(sound)
 
 
 def main():
